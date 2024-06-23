@@ -1,113 +1,241 @@
+'use client'
 import Image from "next/image";
+import icon from "@/assets/icon.png";
 
+import home_icon from "@/assets/icons/home.png"
+import plant_icon from "@/assets/icons/plant.png"
+
+import water_icon from "@/assets/icons/water.png"
+import chart_icon from "@/assets/icons/chart.png"
+import person_icon from "@/assets/icons/person.png"
+import report_icon from "@/assets/icons/report.png"
+
+
+import help_icon from "@/assets/icons/help.png"
+
+
+import bell_icon from "@/assets/icons/bell.png";
+import settings_icon from "@/assets/icons/settings.png"
+import refresh_icon from "@/assets/icons/refresh.png"
+
+import search_icon from "@/assets/icons/search.png"
+
+
+import wind_icon from "@/assets/icons/wind.png"
+import report_white_icon from "@/assets/icons/report white.png"
+import water_white_icon from "@/assets/icons/water white.png"
+import temperatura_icon from "@/assets/icons/temperatura.png"
+
+
+import platancao_image from "@/assets/platancao.png";
+import { useState } from "react";
+
+const nav_items = [
+  {
+    icon: home_icon,
+    title: 'Dashboard'
+  },
+  {
+    icon: plant_icon,
+    title: 'Plantio/Irrigação'
+  }, {
+    icon: chart_icon,
+    title: 'Gráficos'
+  },
+  {
+    icon: person_icon,
+    title: 'Perfil'
+  }, {
+    icon: report_icon,
+    title: 'Relatório'
+  }
+]
+
+const diarios = [
+  {
+    icon: report_white_icon,
+    title: 'Relatório',
+  },
+  {
+    icon: temperatura_icon,
+    title: 'Temperatura'
+  },
+  {
+    icon: water_white_icon,
+    title: 'Humidade do Solo'
+  },
+  {
+    icon: wind_icon,
+    title: 'Vento'
+  }
+
+]
+
+async function connectBluetooth(){
+ 
+    const bt = await navigator.bluetooth.requestDevice({
+    
+      acceptAllDevices:true});
+
+    
+  
+      const btServer = await bt.gatt.connect();
+  
+      //if(btServer.connected){
+      // const btService = await btServer.getPrimaryService(0xffe5);
+  
+ //      const btCharacteristic = await btService.getCharacteristic(0xffe9);
+
+   //    console.log('Valor: ' + (await btCharacteristic.readValue()))
+    //  }
+  
+    
+ // }
+  //catch(ex){
+ //   console.log(ex);
+    //alert('Não foi possivel conectar-se ao bluetooth');
+ // }
+ 
+  
+  
+}
 export default function Home() {
+
+  const [connected, setConnected] = useState(false);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="w-screen h-screen flex overflow-hidden">
+      {/* Barra lateral */}
+      <aside className=" bg-[rgb(88,131,56)] mx-4 my-6 px-4 py-6 rounded-lg  w-[250px] text-white flex flex-col">
+        <Image src={icon} width={100} className=" mx-auto mb-4" />
+        <div className=" mb-2 h-0.5 bg-zinc-50 opacity-30"></div>
+
+        <ul className="mt-4 flex flex-col gap-2">
+          {nav_items.map((item, index) => <NavItem icon={item.icon} title={item.title} active={index == 0} key={index} />)}
+        </ul>
+
+        <div className="mt-auto h-[100px] overflow-hidden rounded-lg relative">
+          <Image src={platancao_image} className="  absolute top-0  left-0 z-0 brightness-50" />
+          <div className=" absolute left-0 top-0 h-full w-full px-2 py-3 text-sm">
+            <div className="flex gap-2 items-center mb-2">
+              <div className="py-2 px-2 rounded-full bg-white w-fit ">
+                <Image src={help_icon} width={18} />
+              </div>
+
+
+
+              <p className="font-bold">Posso ajudar?</p>
+
+            </div>
+            <button className="bg-[#477728] text-white px-2 py-1 rounded-lg block w-fit mx-auto">Descreva</button>
+          </div>
+
         </div>
+      </aside>
+      {/* Conteudo principal */}
+      <main className="flex-1 px-8 py-6 overflow-auto">
+        <div className=" mb-8 flex">
+          <h1 className="text-[rgb(73,80,0)] font-bold  text-xl">Dashboard</h1>
+          <div className="ml-auto flex gap-4 items-center">
+            <div className=" rounded-lg overflow-hidden  flex items-center ">
+              <div className="bg-[#8d8d8d] px-1 py-1">
+                <Image className="h-fit  brightness-0 invert" src={search_icon} width={20} />
+
+              </div>
+              <input type="text" className=" px-3 py-1 bg-[#f6f6f6] outline-none border-none placeholder-zinc-200" placeholder="Pesquise algo..." />
+            </div>
+            <Image className="h-fit cursor-pointer hover:scale-125 duration-150" src={settings_icon} width={24} />
+            <Image className="h-fit cursor-pointer hover:scale-125 duration-150" src={bell_icon} width={24} />
+            <Image className="h-fit cursor-pointer hover:scale-125 duration-150" onClick={connectBluetooth} src={refresh_icon} width={24} />
+
+          </div>
+        </div>
+
+        <div className="flex gap-8">
+          {diarios.map((diario) => <ButtonDiario title={diario.title} icon={diario.icon} />)}
+        </div>
+
+        <div className="flex gap-6 mt-8">
+          <div className="flex flex-col gap-6 w-full">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62258.1035586526!2d15.74140425!3d-12.769972849999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1bb775b4dbf6dfdb%3A0x43a78822d1399cdb!2sHuambo!5e0!3m2!1spt-PT!2sao!4v1717531508249!5m2!1spt-PT!2sao" width="450" height="250" style={{
+                border: 'none'
+              }} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div className=" w-full rounded-lg text-white px-6 py-4 " style={{
+              background: 'linear-gradient(to top, #588338, #82ba4d)'
+            }}>
+
+<h1 className="font-bold text-lg mb-4">Temperatura</h1>
+
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-6 w-full">
+            <div className=" w-full bg-zinc-200 rounded-lg text-white  px-6 py-4" style={{
+              background: 'linear-gradient(to top, #588338, #82ba4d)'
+            }}>
+              <h1 className="font-bold text-lg mb-4">Vento</h1>
+
+              <div className="bg-[#82ba4d] px-4 py-2 rounded-lg flex mb-4  items-center">
+                Velocidade do vento
+                <div className=" mx-4 h-[20px] bg-white w-0.5"></div>
+                <strong>20 m/s</strong>
+              </div>
+
+              <div className="bg-[#82ba4d] px-4 py-2 rounded-lg flex  items-center">
+              Direção do vento
+                <div className=" mx-4 h-[20px] bg-white w-0.5"></div>
+           <strong>Norte</strong>
+              </div>
+            </div>
+            <div className=" w-full bg-zinc-200 rounded-lg text-white  px-6 py-4" style={{
+              background: 'linear-gradient(to top, #588338, #82ba4d)'
+            }}>
+              <h1 className="font-bold text-lg mb-2">Humidade do Solo</h1>
+              <p className="mb-4">Humidade (Y) / Tempo (X)</p>
+              {/* Humidade */}
+
+              <div className="flex items-center gap-2 font-bold">
+              <div className="py-2 px-2 rounded-md flex-none  bg-[#90e053]">
+              <Image src={water_white_icon} width={18}/>
+           
+
       </div>
+      Boa
+              </div>
+            </div>  
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+          </div>
+
+        </div>
+      </main>
+    </div>
+  );
+}
+
+
+function NavItem({ icon, title, active }) {
+  return (
+    <li className={" py-2 px-4 rounded-lg flex  gap-3 items-center  cursor-pointer" + (active ? " bg-[rgb(130,186,77)] " : " hover:bg-[#f9fff446]")}>
+      <div className={"py-2 px-2 rounded-full flex-none " + (active ? " bg-[rgb(98,149,58)]" : "bg-white ")}>
+        <Image src={icon} width={18} className={active ? " brightness-0 invert" : ""} />
+
       </div>
+      {title}
+    </li>
+  );
+}
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+function ButtonDiario({ title, icon }) {
+  return (
+    <button className="text-start  text-sm min-w-[200px] hover:shadow-md flex gap-4 rounded-lg items-center bg-[#ecffd6]  text-[#494f0a] px-4 py-2">
+      <div>    <p >{title} </p>
+        <p className=" opacity-50">diário</p></div>
+      <div className="bg-[#62953a] px-1 py-1 flex-none ml-auto rounded-lg">
+        <Image src={icon} width={20} />
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
       </div>
-    </main>
+    </button>
   );
 }
